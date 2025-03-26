@@ -1,17 +1,78 @@
-# generate_binary_strings Function
-def generate_binary_strings(n, result=''):
-    # Base case
-    if len(result) == n:
-        print(result)
-        return
-    
-    # Append '0' to the string and recurse
-    generate_binary_strings(n, result + '0')
-    
-    # Append '1' to the string and recurse
-    generate_binary_strings(n, result + '1')
+def generate_binary_strings(N):
+    """
+    Generates all possible binary string combinations of length N
+    using recursion and backtracking.
+    """
+    def backtrack(current_string, length):
+        # Base case: if we reach the desired length
+        if len(current_string) == length:
+            result.append(current_string)
+            return
 
-if __name__ == "__main__":
-    n = 8  # number of bits
-    generate_binary_strings(n)
+        # Generate combinations by adding 0
+        backtrack(current_string + '0', length)
+
+        # Generate combinations by adding 1
+        backtrack(current_string + '1', length)
+
+    result = []
+    backtrack('', N)
+    return result
+
+def generate_true_false_combinations(N):
+    """
+    Generates all possible True/False combinations of length N.
+    """
+    def backtrack(current_combination, length):
+        # Base case: if we reach the desired length
+        if len(current_combination) == length:
+            result.append(current_combination.copy())
+            return
+
+        # Generate combinations by adding True
+        current_combination.append(True)
+        backtrack(current_combination, length)
+        current_combination.pop()
+
+        # Generate combinations by adding False
+        current_combination.append(False)
+        backtrack(current_combination, length)
+        current_combination.pop()
+
+    result = []
+    backtrack([], N)
+    return result
+
+def generate_subset_sums(numbers):
+    """
+    Computes all possible subset sums.
+    """
+    def backtrack(index, current_sum):
+        # Add the current sum to the results
+        subset_sums.append(current_sum)
+
+        # Explore subsets by adding subsequent numbers
+        for i in range(index, len(numbers)):
+            backtrack(i + 1, current_sum + numbers[i])
+
+    subset_sums = []
+    backtrack(0, 0)
+    return subset_sums
+
+# Usage example
+N = 3  # Length of the combinations
+
+print("Binary string combinations:")
+binary_strings = generate_binary_strings(N)
+print(binary_strings)
+
+print("\nTrue/False combinations:")
+tf_combinations = generate_true_false_combinations(N)
+print(tf_combinations)
+
+print("\nSubset sums:")
+sample_numbers = [1, 2, 3, 4]
+subset_sums = generate_subset_sums(sample_numbers)
+print(subset_sums)
+
     
